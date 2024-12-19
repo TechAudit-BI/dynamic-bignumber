@@ -40,7 +40,7 @@ const metadata = {
     { url: example1, caption: t('A Big Number') },
     { url: example2, caption: t('With a subheader') },
   ],
-  name: t('Big Number'),
+  name: t('Custom Big Number Chart'),
   tags: [
     t('Additive'),
     t('Business'),

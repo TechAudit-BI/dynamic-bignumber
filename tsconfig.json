@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "outDir": "./dist/",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "declaration": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": false,
     "jsx": "react",
@@ -20,11 +21,18 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "esnext",
+    "target": "ES6",
     "useDefineForClassFields": false,
     "composite": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

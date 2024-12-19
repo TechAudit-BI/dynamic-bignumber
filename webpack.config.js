@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const parsedArgs = require('yargs').argv;
 const packageJson = require('./package.json');
 
 // input dir
@@ -9,7 +9,8 @@ const SRC_DIR = path.resolve(__dirname, './src');
 // output dir
 const BUILD_DIR = path.resolve(__dirname, './dist');
 
-const { mode = 'development', devserverPort = 9000 } = parsedArgs;
+const mode = 'development';
+
 const isDevMode = mode !== 'production';
 const peerDependencies = new Set(Object.keys(packageJson.peerDependencies));
 
@@ -26,9 +27,6 @@ if (isDevMode) {
 }
 
 const config = {
-  node: {
-    fs: 'empty',
-  },
   entry: {
     main: 'src/entry.ts',
   },
@@ -45,12 +43,19 @@ const config = {
     symlinks: false,
   },
   module: {
+    // node config is depricated
+    // --colors depricated too
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
-          'thread-loader',
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: 2,
+            }
+          },
           {
             loader: 'babel-loader',
             options: {
@@ -58,7 +63,12 @@ const config = {
               // disable gzip compression for cache files
               // faster when there are millions of small files
               cacheCompression: false,
-              plugins: ['emotion'],
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript',
+              ], // Ensures ECMAScript 2020 support
+              plugins: ['@emotion', '@babel/plugin-syntax-numeric-separator']
             },
           },
           {
@@ -74,12 +84,26 @@ const config = {
               compilerOptions: {
                 esModuleInterop: false,
                 importHelpers: false,
-                module: 'esnext',
-                target: 'esnext',
+                module: 'ES6',
+                target: 'ES6',
               },
             },
           },
         ],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/, // smth wrong with date-fns
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'], // Ensures compatibility with older environments
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(jpg|gif|png)$/,
@@ -96,6 +120,19 @@ const config = {
         ],
       },
     ],
+  },
+  optimization: { // we need everything in one file
+    minimize: true, // minify bundle
+    splitChunks: {
+      chunks: 'async',
+      minSize: Infinity, // set high minSize
+      cacheGroups: {
+        default: false, // Disable default chunk splitting
+        vendors: false, // Disable vendor chunk splitting
+      },
+    },
+    concatenateModules: true, // improve execution time by reducing function wrappers
+    runtimeChunk: false // Avoid creating a separate chunk for the Webpack runtime
   },
   plugins: [
     new CleanWebpackPlugin({

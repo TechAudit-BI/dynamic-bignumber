@@ -126,10 +126,6 @@ const config = {
     splitChunks: {
       chunks: 'async',
       minSize: Infinity, // set high minSize
-      cacheGroups: {
-        default: false, // Disable default chunk splitting
-        vendors: false, // Disable vendor chunk splitting
-      },
     },
     concatenateModules: true, // improve execution time by reducing function wrappers
     runtimeChunk: false // Avoid creating a separate chunk for the Webpack runtime

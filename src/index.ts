@@ -23,6 +23,7 @@ import buildQuery from './buildQuery';
 import example1 from './images/BigNumber.jpg';
 import example2 from './images/BigNumber2.jpg';
 import thumbnail from './images/thumbnail.png';
+import BigNumberViz from './BigNumberViz';
 import { 
   Behavior, 
   BigNumberTotalChartProps, 
@@ -52,13 +53,18 @@ const metadata = {
   behaviors: [Behavior.DrillToDetail],
 };
 
+/**
+ * Динамический импорт import('./BigNumberViz')
+ * необходимо убрать, т.к. webpack будет разбивать код на несколько файлов.
+ */
+
 export default class BigNumberTotalChartPlugin extends EchartsChartPlugin<
   BigNumberTotalFormData,
   BigNumberTotalChartProps
 > {
   constructor() {
     super({
-      loadChart: () => import('./BigNumberViz'),
+      loadChart: () => Promise.resolve(BigNumberViz),
       metadata,
       buildQuery,
       transformProps,

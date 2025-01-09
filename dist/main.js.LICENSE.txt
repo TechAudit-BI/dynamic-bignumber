@@ -1,3 +1,15 @@
+/*!
+* ZRender, a high performance 2d drawing library.
+*
+* Copyright (c) 2013, Baidu Inc.
+* All rights reserved.
+*
+* LICENSE
+* https://github.com/ecomfe/zrender/blob/master/LICENSE.txt
+*/
+
+/*! ../moment */
+
 /*!************************************!*\
   !*** ./src/entry.ts + 563 modules ***!
   \************************************/
@@ -569,3 +581,7 @@
 /*!***********************************************************!*\
   !*** external "__superset__/@superset-ui/chart-controls" ***!
   \***********************************************************/
+
+//! moment.js
+
+//! moment.js locale configuration

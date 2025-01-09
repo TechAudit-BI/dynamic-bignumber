@@ -151,7 +151,9 @@ const config = {
     },
   ],
   // TODO make source maps work
-  devtool: isDevMode ? 'eval-source-map' : false,
+  // devtool: isDevMode ? 'eval-source-map' : false,
+  // Disable source maps to minify bundle size
+  devtool: false,
 };
 
 module.exports = config;
